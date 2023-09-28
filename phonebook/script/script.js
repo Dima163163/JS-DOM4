@@ -162,14 +162,14 @@ const data = [
     return footer;
   };
   // Функция создания логотипа footer
-  const createLogoFooter = (title) => {
-    const h2 = document.createElement('h2');
-    h2.classList.add('logo-footer');
-    h2.style.cssText = `font-size: 20px;
+  const createTextFooter = (title) => {
+    const p = document.createElement('p');
+    p.classList.add('logo-footer');
+    p.style.cssText = `font-size: 20px;
     font-weight: 400;`;
-    h2.textContent = `Все права защищены ©${title}`;
+    p.textContent = `Все права защищены ©${title}`;
 
-    return h2;
+    return p;
   };
 
   const renderPhoneBook = (app, title) => {
@@ -191,7 +191,7 @@ const data = [
     const table = createTable();
     const form = createForm();
     const footer = createFooter();
-    const logoFooter = createLogoFooter(title);
+    const logoFooter = createTextFooter(title);
 
     header.headerContainer.append(logo);
     main.mainContainer.append(buttonGroup.btnWrapper, table, form.overlay);
