@@ -96,6 +96,7 @@ const data = [
     <th>Имя</th>
     <th>Фамилия</th>
     <th>Телефон</th>
+    <th></th>
     </tr>
     `);
     const tbody = document.createElement('tbody');
@@ -131,7 +132,7 @@ const data = [
     `);
     const buttonGroup = createButtonGroup([
       {
-        className: 'btn btn-primary mr-3',
+        className: 'btn btn-primary mr-3 js-add',
         type: 'submit',
         text: 'Добавить',
       },
@@ -147,6 +148,7 @@ const data = [
     return {
       overlay,
       form,
+      btnCancel: buttonGroup.btns[1],
     };
   };
 
@@ -198,8 +200,15 @@ const data = [
     footer.footerContainer.append(logoFooter);
 
     app.append(header, main, footer);
+
     return {
       list: table.tbody,
+      logo,
+      btnAdd: buttonGroup.btns[0],
+      formOverlay: form.overlay,
+      form: form.form,
+      btnClose: form.form[0],
+      btnCancel: form.btnCancel,
     };
   };
 
@@ -221,9 +230,15 @@ const data = [
     const phoneLink = document.createElement('a');
     phoneLink.href = `tel:${phone}`;
     phoneLink.textContent = phone;
+    tr.phoneLink = phoneLink;
 
     tdPhone.append(phoneLink);
-    tr.append(tdDel, tdName, tdSurname, tdPhone);
+
+    const btnCencel = document.createElement('button');
+    btnCencel.classList.add('btn', 'btn-primary', 'mt-1');
+    btnCencel.textContent = 'Редактировать';
+
+    tr.append(tdDel, tdName, tdSurname, tdPhone, btnCencel);
 
     return tr;
   };
@@ -232,14 +247,52 @@ const data = [
   const renderContacts = (elem, data) => {
     const allRow = data.map(createRow);
     elem.append(...allRow);
+
+    return allRow;
+  };
+
+  // Функция замены логотипа на номер телефона при наведнеии
+  const hoverRow = (allRow, logo) => {
+    const text = logo.textContent;
+
+    allRow.forEach(contact => {
+      contact.addEventListener('mouseenter', () => {
+        logo.textContent = contact.phoneLink.textContent;
+      });
+      contact.addEventListener('mouseleave', () => {
+        logo.textContent = text;
+      });
+    });
   };
 
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phoneBook = renderPhoneBook(app, title);
-    const {list} = phoneBook;
-    renderContacts(list, data);
+    const {list, logo, btnAdd, formOverlay, form, btnCancel,
+      btnClose} = phoneBook;
     // Функционал
+    const allRow = renderContacts(list, data);
+    hoverRow(allRow, logo);
+
+    btnAdd.addEventListener('click', () => {
+      formOverlay.classList.add('is-visible');
+    });
+
+    form.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+
+    btnCancel.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible');
+    });
+
+    btnClose.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible');
+    });
+
+    formOverlay.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible');
+    });
   };
 
   window.phoneBookInit = init;
