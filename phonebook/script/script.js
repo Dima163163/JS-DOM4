@@ -113,8 +113,12 @@ const data = [
 
     const form = document.createElement('form');
     form.classList.add('form');
+    const closeBtn = document.createElement('button');
+    closeBtn.classList.add('close');
+    closeBtn.type = 'button';
+    form.append(closeBtn);
+
     form.insertAdjacentHTML('beforeend', `
-      <button class="close" type="button"></button>
       <h2 class="form-title">Добавить контакт</h2>
       <div class="form-group">
       <label class="form-label" for="name">Имя:</label>
@@ -149,6 +153,7 @@ const data = [
       overlay,
       form,
       btnCancel: buttonGroup.btns[1],
+      btnClose: closeBtn,
     };
   };
 
@@ -207,7 +212,7 @@ const data = [
       btnAdd: buttonGroup.btns[0],
       formOverlay: form.overlay,
       form: form.form,
-      btnClose: form.form[0],
+      btnClose: form.btnClose,
       btnCancel: form.btnCancel,
     };
   };
