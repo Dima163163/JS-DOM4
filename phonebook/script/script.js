@@ -93,8 +93,8 @@ const data = [
     thead.insertAdjacentHTML('beforeend', `
     <tr>
     <th class='delete'>Удалить</th>
-    <th>Имя</th>
-    <th>Фамилия</th>
+    <th class='name'>Имя</th>
+    <th class='surname'>Фамилия</th>
     <th>Телефон</th>
     <th></th>
     </tr>
@@ -207,9 +207,11 @@ const data = [
     app.append(header, main, footer);
 
     return {
+      table,
       list: table.tbody,
       logo,
       btnAdd: buttonGroup.btns[0],
+      btnDel: buttonGroup.btns[1],
       formOverlay: form.overlay,
       form: form.form,
       btnClose: form.btnClose,
@@ -220,6 +222,7 @@ const data = [
   // Функция создания строк с контактами на основе полученных данных
   const createRow = ({name: firstName, surname, phone}) => {
     const tr = document.createElement('tr');
+    tr.classList.add('contact');
 
     const tdDel = document.createElement('td');
     tdDel.classList.add('delete');
@@ -270,11 +273,29 @@ const data = [
     });
   };
 
+  // Функция сортировки
+  const sortFunction = (a, b) => {
+    if (a > b) {
+      return 1;
+    }
+    if (a < b) {
+      return -1;
+    }
+    return 0;
+  };
+
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phoneBook = renderPhoneBook(app, title);
-    const {list, logo, btnAdd, formOverlay, form, btnCancel,
-      btnClose} = phoneBook;
+    const {
+      table,
+      list,
+      logo,
+      btnAdd,
+      btnDel,
+      formOverlay,
+      form,
+    } = phoneBook;
     // Функционал
     const allRow = renderContacts(list, data);
     hoverRow(allRow, logo);
@@ -283,20 +304,39 @@ const data = [
       formOverlay.classList.add('is-visible');
     });
 
-    form.addEventListener('click', (event) => {
-      event.stopPropagation();
+    formOverlay.addEventListener('click', e => {
+      const target = e.target;
+      console.log(e.target);
+      if (target === formOverlay || target.classList.contains('close') ||
+          target.classList.contains('btn-danger')) {
+        formOverlay.classList.remove('is-visible');
+      }
     });
 
-    btnCancel.addEventListener('click', () => {
-      formOverlay.classList.remove('is-visible');
+    btnDel.addEventListener('click', () => {
+      document.querySelectorAll('.delete').forEach(del => {
+        del.classList.toggle('is-visible');
+      });
     });
 
-    btnClose.addEventListener('click', () => {
-      formOverlay.classList.remove('is-visible');
+    list.addEventListener('click', e => {
+      const target = e.target;
+      if (target.closest('.del-icon')) {
+        target.closest('.contact').remove();
+      }
     });
-
-    formOverlay.addEventListener('click', () => {
-      formOverlay.classList.remove('is-visible');
+    table.addEventListener('click', e => {
+      const target = e.target;
+      if (target.closest('.name')) {
+        const newArr = data.sort((a, b) => sortFunction(a.name, b.name));
+        list.textContent = '';
+        renderContacts(list, newArr);
+      }
+      if (target.closest('.surname')) {
+        const newArr = data.sort((a, b) => sortFunction(a.surname, b.surname));
+        list.textContent = '';
+        renderContacts(list, newArr);
+      }
     });
   };
 
