@@ -273,7 +273,7 @@ const data = [
     });
   };
 
-  // Функция сортировки
+  // Функция сортировки по алфавиту
   const sortFunction = (a, b) => {
     if (a > b) {
       return 1;
