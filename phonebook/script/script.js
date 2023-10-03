@@ -35,6 +35,10 @@
       data.push(obj);
       localStorage.setItem(key, JSON.stringify(data));
     }
+    if (Array.isArray(obj)) {
+      data.push(obj);
+      localStorage.setItem(key, JSON.stringify(obj));
+    }
   };
 
   // Функция добавление контакта в объект
@@ -367,7 +371,8 @@
   const removeStorage = (number) => {
     const arr = getStorage('data');
     const newArr = arr.filter(elem => elem.phone !== number);
-    localStorage.setItem('data', JSON.stringify(newArr));
+    // localStorage.setItem('data', JSON.stringify(newArr));
+    setStorage('data', newArr);
   };
     // Функция вызова сортировки по имени и фамилии
   const sortControl = (table, list) => {
@@ -376,13 +381,15 @@
       const target = e.target;
       if (target.closest('.name')) {
         const newArr = data.sort((a, b) => sortFunction(a.name, b.name));
-        localStorage.setItem('data', JSON.stringify(newArr));
+        // localStorage.setItem('data', JSON.stringify(newArr));
+        setStorage('data', newArr);
         list.textContent = '';
         renderContacts(list, newArr);
       }
       if (target.closest('.surname')) {
         const newArr = data.sort((a, b) => sortFunction(a.surname, b.surname));
-        localStorage.setItem('data', JSON.stringify(newArr));
+        // localStorage.setItem('data', JSON.stringify(newArr));
+        setStorage('data', newArr);
         list.textContent = '';
         renderContacts(list, newArr);
       }
