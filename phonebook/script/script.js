@@ -1,36 +1,51 @@
 'use strict';
 
 // Данные для теста
-const data = [
-  {
-    name: 'Иван',
-    surname: 'Петров',
-    phone: '+79514545454',
-  },
-  {
-    name: 'Игорь',
-    surname: 'Семёнов',
-    phone: '+79999999999',
-  },
-  {
-    name: 'Семён',
-    surname: 'Иванов',
-    phone: '+79800252525',
-  },
-  {
-    name: 'Мария',
-    surname: 'Попова',
-    phone: '+79876543210',
-  },
-];
+// const data = [
+//   {
+//     name: 'Иван',
+//     surname: 'Петров',
+//     phone: '+79514545454',
+//   },
+//   {
+//     name: 'Игорь',
+//     surname: 'Семёнов',
+//     phone: '+79999999999',
+//   },
+//   {
+//     name: 'Семён',
+//     surname: 'Иванов',
+//     phone: '+79800252525',
+//   },
+//   {
+//     name: 'Мария',
+//     surname: 'Попова',
+//     phone: '+79876543210',
+//   },
+// ];
 
 {
-  // Функция добавление контакта в объект
-  const addContactData = (contact) => {
-    data.push(contact);
+  // Функция для получения данных из localStorage
+  const getStorage = (key) => JSON.parse(localStorage.getItem(key)) || [];
+
+  // Функция записи в localStorage
+  const setStorage = (key, obj) => {
+    const data = getStorage(key);
+    if (typeof obj === 'object') {
+      data.push(obj);
+      localStorage.setItem(key, JSON.stringify(data));
+    }
   };
 
-  // Функциф создания Container
+  // Функция добавление контакта в объект
+  const addContactData = (contact) => {
+    // data.push(contact);
+    if (contact) {
+      setStorage('data', contact);
+    }
+  };
+
+  // Функция создания Container
   const createContainer = () => {
     const container = document.createElement('div');
     container.classList.add('container');
@@ -333,15 +348,18 @@ const data = [
 
   // Функция вызова сортировки по имени и фамилии
   const sortControl = (table, list) => {
+    const data = getStorage('data');
     table.addEventListener('click', e => {
       const target = e.target;
       if (target.closest('.name')) {
         const newArr = data.sort((a, b) => sortFunction(a.name, b.name));
+        localStorage.setItem('data', JSON.stringify(newArr));
         list.textContent = '';
         renderContacts(list, newArr);
       }
       if (target.closest('.surname')) {
         const newArr = data.sort((a, b) => sortFunction(a.surname, b.surname));
+        localStorage.setItem('data', JSON.stringify(newArr));
         list.textContent = '';
         renderContacts(list, newArr);
       }
@@ -364,6 +382,12 @@ const data = [
       closeModal();
     });
   };
+  // Функция удаления контакта по номеру телефона
+  const removeStorage = (list, number) => {
+    const arr = getStorage('data');
+    const newArr = arr.filter(elem => elem.phone !== number);
+    localStorage.setItem('data', JSON.stringify(newArr));
+  };
 
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
@@ -377,7 +401,8 @@ const data = [
       form,
     } = renderPhoneBook(app, title);
     // Функционал
-    const allRow = renderContacts(list, data);
+    // Вызываем функцию отристовки контактов
+    const allRow = renderContacts(list, getStorage('data'));
     // Вызываем функцию открытия и закрытия модального
     // окна и вытаскиваем ф-ию закрытия модального окна
     const {closeModal} = modalControl(btnAdd, formOverlay);
@@ -389,6 +414,8 @@ const data = [
     sortControl(table, list);
     // Вызываем функцию добавления данных из модального окрна в таблицу
     formControl(form, list, closeModal);
+    // Вызываем функцию удаления контакта по номеру телефона
+    removeStorage(list, '666');
   };
 
   window.phoneBookInit = init;
