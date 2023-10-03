@@ -364,7 +364,7 @@
     });
   };
   // Функция удаления контакта по номеру телефона
-  const removeStorage = (list, number) => {
+  const removeStorage = (number) => {
     const arr = getStorage('data');
     const newArr = arr.filter(elem => elem.phone !== number);
     localStorage.setItem('data', JSON.stringify(newArr));
