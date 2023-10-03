@@ -28,7 +28,6 @@ const data = [
   // Функция добавление контакта в объект
   const addContactData = (contact) => {
     data.push(contact);
-    console.log(data);
   };
 
   // Функциф создания Container
