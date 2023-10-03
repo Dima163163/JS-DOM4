@@ -346,25 +346,6 @@
     });
   };
 
-  // Функция вызова сортировки по имени и фамилии
-  const sortControl = (table, list) => {
-    const data = getStorage('data');
-    table.addEventListener('click', e => {
-      const target = e.target;
-      if (target.closest('.name')) {
-        const newArr = data.sort((a, b) => sortFunction(a.name, b.name));
-        localStorage.setItem('data', JSON.stringify(newArr));
-        list.textContent = '';
-        renderContacts(list, newArr);
-      }
-      if (target.closest('.surname')) {
-        const newArr = data.sort((a, b) => sortFunction(a.surname, b.surname));
-        localStorage.setItem('data', JSON.stringify(newArr));
-        list.textContent = '';
-        renderContacts(list, newArr);
-      }
-    });
-  };
   // Функция добавления нового контакта в телефонный справочник
   const addContactPage = (contact, list) => {
     list.append(createRow(contact));
@@ -388,6 +369,25 @@
     const newArr = arr.filter(elem => elem.phone !== number);
     localStorage.setItem('data', JSON.stringify(newArr));
   };
+    // Функция вызова сортировки по имени и фамилии
+  const sortControl = (table, list) => {
+    table.addEventListener('click', e => {
+      const data = getStorage('data');
+      const target = e.target;
+      if (target.closest('.name')) {
+        const newArr = data.sort((a, b) => sortFunction(a.name, b.name));
+        localStorage.setItem('data', JSON.stringify(newArr));
+        list.textContent = '';
+        renderContacts(list, newArr);
+      }
+      if (target.closest('.surname')) {
+        const newArr = data.sort((a, b) => sortFunction(a.surname, b.surname));
+        localStorage.setItem('data', JSON.stringify(newArr));
+        list.textContent = '';
+        renderContacts(list, newArr);
+      }
+    });
+  };
 
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
@@ -410,12 +410,12 @@
     hoverRow(allRow, logo);
     // Вызываем функцияю удаления из формы
     deleteControl(btnDel, list);
-    // Вызываем функцию вызова сортировки в таблице по имени и фамилии
-    sortControl(table, list);
     // Вызываем функцию добавления данных из модального окрна в таблицу
     formControl(form, list, closeModal);
     // Вызываем функцию удаления контакта по номеру телефона
     removeStorage(list, '666');
+    // Вызываем функцию вызова сортировки в таблице по имени и фамилии
+    sortControl(table, list);
   };
 
   window.phoneBookInit = init;
