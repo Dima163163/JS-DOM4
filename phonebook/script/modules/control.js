@@ -50,8 +50,12 @@ export const deleteControl = (btnDel, list) => {
 
   list.addEventListener('click', e => {
     const target = e.target;
+    const number = target.closest('tr').querySelector('a').textContent;
     if (target.closest('.del-icon')) {
+      const arr = getStorage('data');
+      const newArr = arr.filter(elem => elem.phone !== number);
       target.closest('.contact').remove();
+      setStorage('data', newArr);
     }
   });
 };
