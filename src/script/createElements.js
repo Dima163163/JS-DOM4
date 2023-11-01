@@ -1,4 +1,10 @@
+import image from '../img/icon.svg';
 
+export const createImageLogo = () => {
+  const img = document.createElement('img');
+  img.src = image;
+  return img;
+};
 // Функция создания Container
 const createContainer = () => {
   const container = document.createElement('div');

@@ -1,13 +1,17 @@
-import {getStorage, removeStorage} from './modules/serviceStorage.js';
+import {getStorage, removeStorage} from './script/serviceStorage';
 
-import * as render from './modules/render.js';
+import * as render from './script/render';
 
 import {
   modalControl, deleteControl,
   formControl, sortControl,
-} from './modules/control.js';
+} from './script/control';
 
-import hoverRow from './modules/hover.js';
+import hoverRow from './script/hover';
+
+
+import './index.html';
+import './scss/index.scss';
 
 {
   const init = (selectorApp, title) => {

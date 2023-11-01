@@ -1,12 +1,14 @@
 import {
+  createImageLogo,
   createHeader, createLogo,
   createMain, createButtonGroup, createTable, createForm,
   createFooter, createTextFooter, createRow,
-} from './createElements.js';
+} from './createElements';
 
 // Функция отрисовки телефонного справочника
 export const renderPhoneBook = (app, title) => {
   const header = createHeader();
+  const imageLogo = createImageLogo();
   const logo = createLogo(title);
   const main = createMain();
   const buttonGroup = createButtonGroup([
@@ -26,7 +28,7 @@ export const renderPhoneBook = (app, title) => {
   const footer = createFooter();
   const logoFooter = createTextFooter(title);
 
-  header.headerContainer.append(logo);
+  header.headerContainer.append(imageLogo, logo);
   main.mainContainer.append(buttonGroup.btnWrapper, table, overlay);
   footer.footerContainer.append(logoFooter);
 

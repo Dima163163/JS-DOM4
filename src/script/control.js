@@ -1,6 +1,6 @@
-import {getStorage, setStorage, addContactData} from './serviceStorage.js';
-import * as render from './render.js';
-import {createRow} from './createElements.js';
+import {getStorage, setStorage, addContactData} from './serviceStorage';
+import * as render from './render';
+import {createRow} from './createElements';
 
 
 // Функция сортировки по алфавиту
